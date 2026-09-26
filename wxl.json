@@ -1,0 +1,29 @@
+{
+  "manifest": 1,
+  "extension": {
+    "id": "wxl-character-creation-preview",
+    "version": "0.17.1",
+    "abi": "1.1",
+    "entry": "wxl-character-creation-preview.dll",
+    "assets": [],
+    "requires": {
+      "wxl-runtime": ">=1.1.0"
+    },
+    "conflicts": [],
+    "hooks": []
+  },
+  "deploy": {
+    "mode": "release",
+    "match": "*.dll"
+  },
+  "listing": {
+    "title": "Character Creation Preview",
+    "tagline": "Class animations and spell visuals on the creation screen.",
+    "description": "store/description.md",
+    "gallery": [],
+    "categories": ["interface", "animation"],
+    "accent": "#8f64c9"
+  },
+  "license": "GPL-3.0-or-later",
+  "signature": null
+}
