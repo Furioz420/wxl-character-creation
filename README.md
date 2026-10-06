@@ -1,5 +1,7 @@
 # WXL Character Creation Preview
 
+[Build compatibility and release gate](BUILDING.md)
+
 WXL v1.1 module for class showcases on the WotLK 3.3.5a character-creation screen.
 
 The initial character/race model waits for its outfit and collection geometry; later class

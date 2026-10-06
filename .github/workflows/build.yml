@@ -1,0 +1,55 @@
+# Source compatibility check; no binary release is published by this workflow.
+name: Build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  EXT_NAME: wxl-character-creation-preview
+  CORE_REPO: Furioz420/wxl-core
+  CORE_REF: 48b2849ed05d2c66e2ba2a6185e09fafd111da53
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout this extension
+        uses: actions/checkout@v4
+        with:
+          path: ext
+
+      - name: Checkout compatible core
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.CORE_REPO }}
+          ref: ${{ env.CORE_REF }}
+          submodules: recursive
+          path: core
+
+      - name: Add extension to core build
+        shell: pwsh
+        run: |
+          $dest = "core/extensions/$env:EXT_NAME"
+          New-Item -ItemType Directory -Force -Path $dest | Out-Null
+          Copy-Item -Path "ext/*" -Destination $dest -Recurse -Force
+
+      - name: Configure Win32
+        shell: pwsh
+        run: cmake -S core -B core/build -A Win32
+
+      - name: Build extension
+        shell: pwsh
+        run: cmake --build core/build --config Release --target $env:EXT_NAME --parallel
+
+      - name: Verify DLL
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "core/build/Release/$env:EXT_NAME.dll")) {
+            throw "Extension DLL was not produced"
+          }
